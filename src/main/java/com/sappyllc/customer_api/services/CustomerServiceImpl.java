@@ -45,4 +45,13 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return "Customer not found";
     }
+
+    @Override
+    public Customer addANewCustomer(Customer customer) throws IOException {
+        Customer newCustomer = new Customer(customer.getFirstName(),
+                customer.getLastName(),customer.getPhoneNumber(),customer.getAddress());
+        ArrayList<Customer> customerList = getCustomerArrayList(mapper);
+        customerList.add(newCustomer);
+        return newCustomer;
+    }
 }

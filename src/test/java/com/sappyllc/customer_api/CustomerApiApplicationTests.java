@@ -7,13 +7,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +57,21 @@ class CustomerApiApplicationTests {
 		mockMvc.perform(get("/api/customers/{id}","b8a504e8-7cbd-4a54-9a24-dc1832558162"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(getCustomerJsonString()));
+	}
+
+	@Test
+	public void addANewCustomer() throws Exception {
+		mockMvc.perform(post("/api/customers")
+								.contentType(MediaType.APPLICATION_JSON)
+								.characterEncoding("utf-8")
+								.content(createCustomerJsonString())
+				)
+				.andExpect(status().isCreated())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Araminta"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Ross"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber").value("309-555-1370"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.address").value("1849 Harriet Ave, Auburn, NY 63102"));
 	}
 
 
