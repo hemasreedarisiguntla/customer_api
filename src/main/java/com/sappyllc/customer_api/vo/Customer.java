@@ -1,4 +1,4 @@
-package com.sappyllc.customer_api;
+package com.sappyllc.customer_api.vo;
 
 import java.util.UUID;
 
