@@ -47,6 +47,13 @@ class CustomerApiApplicationTests {
 				.andExpect(content().string(mapper.writeValueAsString(customerList)));
 	}
 
+	@Test
+	public void getACustomer() throws Exception {
+		mockMvc.perform(get("/api/customers/{id}","b8a504e8-7cbd-4a54-9a24-dc1832558162"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(getCustomerJsonString()));
+	}
+
 
 	// TEST UTILITIES ----------------------------------------------------
 
